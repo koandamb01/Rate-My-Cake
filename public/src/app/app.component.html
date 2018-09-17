@@ -1,0 +1,69 @@
+<div class="container">
+  <br>
+  <div class="row">
+    <div class="col-md-8">
+      <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center active">
+          List of Cakes
+          <span class="badge badge-pill">
+            <button class="btn btn-success" (click)="show=!show">{{ show ? 'Hide Form' : 'New Cake' }}</button>
+          </span>
+        </li>
+        <div style="height: 400px; overflow: scroll;">
+          <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let cake of cakes">
+            <div class="img-box">
+              <img [src]="cake.imageUrl" (click)="getCake(cake)">
+            </div>
+            <div class="rate-box">
+              <form #Rating="ngForm" (ngSubmit)="postRating(Rating.value, cake._id)">
+                <span class="text-success" *ngIf="ratingMessage.status !='Error' && ratingMessage.cakeID == cake._id">{{
+                  ratingMessage.status }}</span>
+                <span class="text-danger" *ngIf="ratingMessage.message.comment && ratingMessage.cakeID == cake._id">{{
+                  ratingMessage.message.comment }}</span>
+                <textarea name="comment" cols="20" rows="2" class="form-control" ngModel></textarea>
+                <br>
+                <span class="text-danger" *ngIf="ratingMessage.message.rating && ratingMessage.cakeID == cake._id">{{
+                  ratingMessage.message.rating }}</span>
+                <div class="form-row">
+                  <div class="col-md-4">
+                    <label for="rating">Rating</label>
+                    <select class="form-control" name="rating" ngModel>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                    </select>
+                  </div>
+                  <div class="col-md-8 text-right">
+                    <button class="btn btn-primary btn-rating" type="submit">Submit Review</button>
+                  </div>
+                </div>
+                <br>
+              </form>
+            </div>
+          </li>
+        </div>
+      </ul>
+    </div>
+    <div class="col-md-4" *ngIf="show">
+      <div class="myForm">
+        <p>Submit a cake to read</p>
+        <span class="text-success" *ngIf="cakeMessage.status !='Error'">{{ cakeMessage.status }}</span>
+        <form (submit)="postCake()">
+          <div class="form-group">
+            <span class="text-danger" *ngIf="cakeMessage.message.baker">{{ cakeMessage.message.baker }}</span>
+            <input type="text" class="form-control" name="newCake.baker" [(ngModel)]="newCake.baker" placeholder="Baker Name">
+          </div>
+
+          <div class="form-group">
+            <span class="text-danger" *ngIf="cakeMessage.message.imageUrl">{{ cakeMessage.message.imageUrl }}</span>
+            <input type="text" class="form-control" name="newCake.imageUrl" [(ngModel)]="newCake.imageUrl" placeholder="Cake Image Url">
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <app-cake *ngIf="selectCake" [cake]='selectCake'></app-cake>
+</div>

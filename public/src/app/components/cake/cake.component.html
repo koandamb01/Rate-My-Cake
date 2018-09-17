@@ -1,0 +1,26 @@
+<div class="detail-box">
+  <h3>Baked by <i class="text-success">{{ cake.baker }}</i></h3>
+  <div class="img-box">
+    <img [src]="cake.imageUrl">
+  </div>
+  <div class="rating-detail-box">
+    <ul class="list-group">
+      <li class="list-group-item d-flex justify-content-between align-items-center active">
+        Average rating: <i class="text-warning">{{ cake.average }}</i>
+      </li>
+      <div style="height: 250px; overflow: scroll;">
+        <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let rating of cake.ratings">
+          {{ rating.comment }}
+          <span class="badge badge-pill">
+            <i *ngFor="let item of arrayOne(5); let i = index;">
+              <i class="fa fa-star checked" *ngIf="i+1 <= rating.rating; else NoStar"></i>
+              <ng-template #NoStar>
+                <i class="fa fa-star"></i>
+              </ng-template>
+            </i>
+          </span>
+        </li>
+      </div>
+    </ul>
+  </div>
+</div>
